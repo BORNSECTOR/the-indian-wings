@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ===== CUSTOM PROPERTIES ===== */
+@layer base {
+  :root {
+    --navy: #071B3A;
+    --orange: #FF7200;
+    --whatsapp: #25D366;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #F8F6F1; }
+  ::-webkit-scrollbar-thumb { background: #FF7200; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #E66600; }
+
+  ::selection { background: #FF7200; color: white; }
+
+  html { scroll-behavior: smooth; }
+
+  img { max-width: 100%; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid #FF7200;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@layer base {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 114, 0, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(255, 114, 0, 0); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+  @keyframes whatsapp-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  }
+  .animate-whatsapp-pulse { animation: whatsapp-pulse 2s ease-in-out infinite; }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-up { animation: slide-up 0.6s ease forwards; }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fade-in { animation: fade-in 0.5s ease forwards; }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate-scale-in { animation: scale-in 0.5s ease forwards; }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
+  @keyframes dash {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes shine {
+    from { left: -100%; }
+    to { left: 200%; }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 30s linear infinite; }
+}
+
+/* ===== COMPONENT CLASSES ===== */
+@layer components {
+  .img-zoom { overflow: hidden; }
+  .img-zoom img { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .img-zoom:hover img { transform: scale(1.08); }
+
+  .card-lift { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease; }
+  .card-lift:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12); }
+
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: none;
+  }
+  .btn-shine:hover::after { animation: shine 0.6s ease; }
+
+  .page-enter { animation: fade-in 0.35s ease forwards; }
+
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
