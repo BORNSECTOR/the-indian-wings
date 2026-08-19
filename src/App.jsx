@@ -5,12 +5,12 @@ import GalleryPage from './Gallery.jsx';
 import PackagesPage from './Packages.jsx';
 
 import {
-    MapPin, Star, Clock, Heart, ChevronDown, CheckCircle2, Shield, Plane, Compass,
+    MapPin, Star, Clock, Heart, CheckCircle2, Shield, Plane, Compass,
     Gift, Users, ChevronLeft, ChevronRight, Sparkles, Camera, ArrowRight
 } from 'lucide-react';
 
-import { Header, Footer, FloatingWhatsApp, ScrollToTop, Reveal, AnimCounter, SectionBadge, FadeImg, WhatsAppGlyph, Logo, WHATSAPP, CALL } from './shared.jsx';
-import { HERO_SLIDES, DESTINATIONS, MARQUEE_IMAGES, SEASONS, EXPERIENCES, PACKAGES } from './images.js';
+import { Header, Footer, FloatingWhatsApp, ScrollToTop, Reveal, AnimCounter, SectionBadge, FadeImg, WhatsAppGlyph, WHATSAPP, CALL } from './shared.jsx';
+import { HERO, DESTINATIONS, MARQUEE_IMAGES, SEASONS, EXPERIENCES, PACKAGES } from './images.js';
 
 const typography = { heading: 'font-serif tracking-tight', body: 'font-sans' };
 
@@ -40,7 +40,7 @@ const TiltCard = ({ children, className = '', max = 7 }) => {
 };
 
 /* ============================================================
-   HERO — full-screen Ken Burns slideshow
+   HERO — full-screen single background image
    ============================================================ */
 const FALLING_DOTS = [
     { left: '6%',  delay: '0s',    dur: '14s', size: 5 },
@@ -55,38 +55,21 @@ const FALLING_DOTS = [
     { left: '93%', delay: '2s',    dur: '18s', size: 3 },
 ];
 
-const HeroSlideshow = () => {
-    const [slide, setSlide] = useState(0);
+const Hero = () => {
     const [loaded, setLoaded] = useState(false);
-    const [paused, setPaused] = useState(false);
-    const timer = useRef(null);
 
     useEffect(() => { const t = setTimeout(() => setLoaded(true), 120); return () => clearTimeout(t); }, []);
 
-    const next = useCallback(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), []);
-    const prev = () => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-
-    useEffect(() => {
-        if (paused) return undefined;
-        timer.current = setInterval(next, 7000);
-        return () => clearInterval(timer.current);
-    }, [paused, next]);
-
     return (
-        <section className="relative min-h-[92vh] md:min-h-screen bg-[#071B3A] overflow-hidden flex items-center"
-                 onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-            {/* ---- slides ---- */}
-            {HERO_SLIDES.map((s, i) => (
-                <div key={i} className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out ${i === slide ? 'opacity-100' : 'opacity-0'}`}>
-                    <img
-                        key={`${i}-${i === slide}`}
-                        src={s.src}
-                        alt={s.title}
-                        loading={i < 2 ? 'eager' : 'lazy'}
-                        className={`w-full h-full object-cover ${i === slide ? 'animate-kenburns' : ''}`}
-                    />
-                </div>
-            ))}
+        <section className="relative min-h-[92vh] md:min-h-screen bg-[#071B3A] overflow-hidden flex items-center">
+            {/* ---- single background image ---- */}
+            <div className="absolute inset-0">
+                <img
+                    src={HERO.src}
+                    alt={HERO.title}
+                    className="w-full h-full object-cover animate-kenburns"
+                />
+            </div>
 
             {/* ---- overlays ---- */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#071B3A]/95 via-[#071B3A]/55 to-[#071B3A]/20"></div>
@@ -105,9 +88,9 @@ const HeroSlideshow = () => {
             <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#FF7200]/10 rounded-full blur-3xl animate-drift pointer-events-none"></div>
             <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-[#25D366]/5 rounded-full blur-3xl animate-drift pointer-events-none" style={{ animationDelay: '-8s' }}></div>
 
-            {/* ---- content ---- */}
+            {/* ---- content (centered) ---- */}
             <div className="max-w-[1380px] mx-auto px-4 md:px-8 relative z-10 w-full py-28 md:py-32">
-                <div className="max-w-2xl">
+                <div className="max-w-3xl mx-auto text-center">
                     <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-[#FFB347] text-sm font-semibold mb-6 transition-all duration-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                         <Plane size={16} className="animate-float" /> KASHMIR TOURISM · EST. 2010
                     </div>
@@ -126,7 +109,7 @@ const HeroSlideshow = () => {
                     <p className={`text-gray-300 text-lg md:text-xl mb-10 font-light leading-relaxed transition-all duration-700 delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                         Your trusted local partner for unforgettable Kashmir experiences. We've been sharing the beauty of our homeland with travelers for over <span className="text-white font-medium">15 years</span>.
                     </p>
-                    <div className={`flex flex-col sm:flex-row gap-4 transition-all duration-700 delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+                    <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                         <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-shine animate-gradient-x inline-flex items-center justify-center px-8 py-4 rounded-[10px] font-semibold text-base bg-gradient-to-r from-[#25D366] to-[#1ebe57] text-white hover:shadow-xl hover:shadow-[#25D366]/30 hover:-translate-y-1 transition-all duration-300">
                             <WhatsAppGlyph size={18} className="mr-2" /> Plan Your Kashmir Trip
                         </a>
@@ -135,64 +118,6 @@ const HeroSlideshow = () => {
                         </a>
                     </div>
                 </div>
-
-                {/* ---- layered official brand mark ---- */}
-                <div className={`absolute right-8 top-8 hidden lg:block transition-all duration-1000 delay-700 xl:right-12 xl:top-12 ${loaded ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0'}`}>
-                    <div className="hero-logo-badge relative overflow-hidden rounded-[28px] border border-white/30 bg-white/[0.94] px-6 py-5 shadow-[0_28px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl xl:px-8 xl:py-6">
-                        <div className="absolute -right-10 -top-12 h-28 w-28 rounded-full bg-[#FF7200]/15 blur-2xl"></div>
-                        <Logo className="relative h-auto w-52 object-contain xl:w-64" />
-                        <div className="relative mt-4 flex items-center gap-3 border-t border-[#071B3A]/10 pt-3">
-                            <span className="h-2 w-2 rounded-full bg-[#FF7200] shadow-[0_0_0_5px_rgba(255,114,0,0.12)]"></span>
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#071B3A]/60">Born in Kashmir · Trusted across India</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* ---- slide caption card ---- */}
-                <div className="absolute bottom-24 md:bottom-16 left-4 md:left-8 max-w-[1380px] hidden md:flex items-end justify-between w-[calc(100%-2rem)]">
-                    <div key={slide} className="glass rounded-2xl px-5 py-4 flex items-center gap-4 animate-[slide-up_0.7s_cubic-bezier(0.16,1,0.3,1)_forwards]">
-                        <div className="w-10 h-10 rounded-xl bg-[#FF7200]/20 flex items-center justify-center text-[#FFB347]">
-                            <MapPin size={18} />
-                        </div>
-                        <div>
-                            <p className="text-white font-bold text-sm">{HERO_SLIDES[slide].title}</p>
-                            <p className="text-white/60 text-xs">{HERO_SLIDES[slide].sub}</p>
-                        </div>
-                        <span className="hidden sm:block text-white/40 text-xs font-semibold ml-4 tabular-nums">
-                            0{slide + 1} <span className="text-white/20">/ 0{HERO_SLIDES.length}</span>
-                        </span>
-                    </div>
-
-                    {/* ---- controls ---- */}
-                    <div className="hidden md:flex items-center gap-3">
-                        <button onClick={prev} aria-label="Previous slide" className="w-12 h-12 rounded-full glass text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300">
-                            <ChevronLeft size={20} />
-                        </button>
-                        <div className="flex items-center gap-2 px-3">
-                            {HERO_SLIDES.map((_, i) => (
-                                <button key={i} onClick={() => setSlide(i)} aria-label={`Go to slide ${i + 1}`}
-                                        className={`rounded-full transition-all duration-500 ${i === slide ? 'w-8 h-2 bg-[#FF7200]' : 'w-2 h-2 bg-white/40 hover:bg-white/70'}`}></button>
-                            ))}
-                        </div>
-                        <button onClick={next} aria-label="Next slide" className="w-12 h-12 rounded-full glass text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300">
-                            <ChevronRight size={20} />
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* ---- mobile slide dots ---- */}
-            <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 flex md:hidden items-center gap-2">
-                {HERO_SLIDES.map((_, i) => (
-                    <button key={i} onClick={() => setSlide(i)} aria-label={`Go to slide ${i + 1}`}
-                            className={`rounded-full transition-all duration-500 ${i === slide ? 'w-6 h-2 bg-[#FF7200]' : 'w-2 h-2 bg-white/40'}`}></button>
-                ))}
-            </div>
-
-            {/* ---- scroll cue ---- */}
-            <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-white/50 animate-bounce-soft">
-                <span className="text-[10px] font-semibold tracking-[0.25em] uppercase">Scroll</span>
-                <ChevronDown size={16} />
             </div>
         </section>
     );
@@ -760,7 +685,7 @@ export default function App() {
         <div className="min-h-screen bg-[#F8F6F1] font-sans overflow-x-hidden selection:bg-[#FF7200] selection:text-white page-enter">
             <Header onNavigate={handleNavigate} active="home" />
             <main>
-                <HeroSlideshow />
+                <Hero />
                 <Stats />
                 <Destinations onNavigate={handleNavigate} />
                 <PhotoMarquee onNavigate={handleNavigate} />
