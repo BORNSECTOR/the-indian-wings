@@ -8,6 +8,11 @@ const toKey = (link) => ({ Home: 'home', Packages: 'packages', Gallery: 'gallery
 export const WHATSAPP = 'https://wa.me/917827743041';
 export const CALL = 'tel:+919103599174';
 export const EMAIL = 'mailto:Kashmirtravels517@gmail.com';
+export const OFFICIAL_LOGO = 'https://goahotelpackages.in/landing/assets/logo-ijORuPj_.png';
+
+const Logo = ({ className, ...props }) => (
+    <img src={OFFICIAL_LOGO} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = '/logo.webp'; }} alt="The Indian Wings" className={className} {...props} />
+);
 
 /* ============ WhatsApp glyph ============ */
 export const WhatsAppGlyph = ({ size = 18, className = '' }) => (
@@ -152,7 +157,7 @@ export const Header = ({ onNavigate, active = '' }) => {
             <header className={`sticky top-0 z-50 w-full transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg shadow-[#071B3A]/5 py-2' : 'bg-white py-3.5 md:py-5 border-b border-gray-100'}`}>
                 <div className="max-w-[1380px] mx-auto px-4 md:px-8 flex justify-between items-center">
                     <a href="#" onClick={(e) => { e.preventDefault(); go('Home'); }} className="flex items-center gap-2.5 cursor-pointer z-50 group">
-                        <img src="/logo.webp" alt="The Indian Wings" className={`h-11 md:h-13 w-auto transition-all duration-500 group-hover:scale-105 ${isScrolled ? 'md:h-10' : ''}`} />
+                        <Logo className={`h-11 md:h-13 w-auto transition-all duration-500 group-hover:scale-105 ${isScrolled ? 'md:h-10' : ''}`} />
                     </a>
                     <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
                         {NAV_LINKS.map((link) => (
@@ -231,7 +236,7 @@ export const Footer = ({ onNavigate }) => (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
                 <div className="lg:col-span-2">
                     <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="flex items-center gap-2 mb-6 group">
-                        <img src="/logo.webp" alt="The Indian Wings" className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
+                        <Logo className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <p className="text-gray-400 mb-6 max-w-sm font-light leading-relaxed">Your trusted local partner for unforgettable Kashmir experiences. We've been sharing the beauty of our homeland with travelers for over 15 years.</p>
                     <div className="space-y-3 text-sm">
@@ -239,6 +244,7 @@ export const Footer = ({ onNavigate }) => (
                         <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-400 hover:text-[#FF7200] transition-colors group"><div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-[#FF7200]/20 transition-colors"><MessageCircle size={14} className="text-[#FF7200]" /></div> +91 78277 43041</a>
                         <a href={EMAIL} className="flex items-center gap-3 text-gray-400 hover:text-[#FF7200] transition-colors group"><div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-[#FF7200]/20 transition-colors"><Mail size={14} className="text-[#FF7200]" /></div> Kashmirtravels517@gmail.com</a>
                         <p className="flex items-start gap-3 text-gray-400"><div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0"><MapPin size={14} className="text-[#FF7200]" /></div> Sheikh Palace, 2nd Floor, Kanyar Chowk, Srinagar</p>
+                        <a href="/download" className="inline-flex items-center gap-2 text-[#FFB347] hover:text-[#FF7200] transition-colors text-xs font-semibold mt-2">Download project ZIP <span aria-hidden="true">↓</span></a>
                     </div>
                 </div>
                 <div>
@@ -279,7 +285,11 @@ export const Footer = ({ onNavigate }) => (
 );
 
 /* ============ Floating WhatsApp ============ */
-export const FloatingWhatsApp = () => (
+export const FloatingWhatsApp = () => {
+    const [isPreview, setIsPreview] = useState(false);
+    useEffect(() => setIsPreview(window.location.hostname.endsWith('.e2b.app')), []);
+    return (<>
+    {isPreview && <a href="/download" className="fixed bottom-6 left-1/2 -translate-x-1/2 bottom-5 z-50 rounded-full bg-[#FF7200] text-white px-5 py-2.5 text-xs sm:text-sm font-bold shadow-xl hover:bg-[#e76500] hover:-translate-y-0.5 transition-all" aria-label="Download project ZIP">Download project (zip)</a>}
     <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-50 group" aria-label="Chat on WhatsApp">
         <div className="w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 animate-whatsapp-pulse">
             <WhatsAppGlyph size={28} />
@@ -288,7 +298,8 @@ export const FloatingWhatsApp = () => (
             Chat on WhatsApp
         </div>
     </a>
-);
+    </>);
+};
 
 /* ============ Scroll to top ============ */
 export const ScrollToTop = () => {
