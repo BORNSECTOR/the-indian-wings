@@ -11,29 +11,12 @@ export const wm = (file, width = 1000) =>
 export const unsplash = (id, width = 800) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&q=80&w=${width}`;
 
-/* ---------------- Hero slideshow ---------------- */
-export const HERO_SLIDES = [
-  {
-    src: unsplash('photo-1597074866923-dc0589150e65', 1920),
-    title: 'Dal Lake, Srinagar',
-    sub: "The jewel in Kashmir's crown",
-  },
-  {
-    src: unsplash('photo-1506905925346-21bda4d32df4', 1920),
-    title: 'The Pir Panjal Range',
-    sub: 'Snow-capped peaks that touch the sky',
-  },
-  {
-    src: unsplash('photo-1596422846543-75c6fc197f07', 1920),
-    title: 'Gulmarg Meadows',
-    sub: 'The meadow of flowers, 2,650 m high',
-  },
-  {
-    src: unsplash('photo-1605649487212-4d4ce3e015ac', 1920),
-    title: 'Sonmarg Valley',
-    sub: 'The meadow of gold on the Sindh river',
-  },
-];
+/* ---------------- Hero (single background image) ---------------- */
+export const HERO = {
+  src: unsplash('photo-1605649487212-4d4ce3e015ac', 1920),
+  title: 'Sonmarg Valley',
+  sub: 'The meadow of gold on the Sindh river',
+};
 
 /* ---------------- Destinations ---------------- */
 export const DESTINATIONS = [
