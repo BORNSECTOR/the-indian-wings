@@ -9,8 +9,8 @@ import {
     Gift, Users, ChevronLeft, ChevronRight, Sparkles, Camera, ArrowRight
 } from 'lucide-react';
 
-import { Header, Footer, FloatingWhatsApp, ScrollToTop, Reveal, AnimCounter, SectionBadge, FadeImg, WhatsAppGlyph, WHATSAPP, CALL } from './shared.jsx';
-import { HERO_SLIDES, DESTINATIONS, MARQUEE_IMAGES, SEASONS, EXPERIENCES, PACKAGES, CTA_BACKGROUND } from './images.js';
+import { Header, Footer, FloatingWhatsApp, ScrollToTop, Reveal, AnimCounter, SectionBadge, FadeImg, WhatsAppGlyph, Logo, WHATSAPP, CALL } from './shared.jsx';
+import { HERO_SLIDES, DESTINATIONS, MARQUEE_IMAGES, SEASONS, EXPERIENCES, PACKAGES } from './images.js';
 
 const typography = { heading: 'font-serif tracking-tight', body: 'font-sans' };
 
@@ -133,6 +133,18 @@ const HeroSlideshow = () => {
                         <a href={CALL} className="btn-shine inline-flex items-center justify-center px-8 py-4 rounded-[10px] font-semibold text-base glass text-white hover:bg-white/20 transition-all duration-300">
                             Call an Expert
                         </a>
+                    </div>
+                </div>
+
+                {/* ---- layered official brand mark ---- */}
+                <div className={`absolute right-8 top-8 hidden lg:block transition-all duration-1000 delay-700 xl:right-12 xl:top-12 ${loaded ? 'translate-y-0 opacity-100' : '-translate-y-6 opacity-0'}`}>
+                    <div className="hero-logo-badge relative overflow-hidden rounded-[28px] border border-white/30 bg-white/[0.94] px-6 py-5 shadow-[0_28px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl xl:px-8 xl:py-6">
+                        <div className="absolute -right-10 -top-12 h-28 w-28 rounded-full bg-[#FF7200]/15 blur-2xl"></div>
+                        <Logo className="relative h-auto w-52 object-contain xl:w-64" />
+                        <div className="relative mt-4 flex items-center gap-3 border-t border-[#071B3A]/10 pt-3">
+                            <span className="h-2 w-2 rounded-full bg-[#FF7200] shadow-[0_0_0_5px_rgba(255,114,0,0.12)]"></span>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#071B3A]/60">Born in Kashmir · Trusted across India</span>
+                        </div>
                     </div>
                 </div>
 
@@ -518,53 +530,159 @@ const TravelTip = () => (
 );
 
 /* ============================================================
-   TESTIMONIALS
+   THE GUESTBOOK — immersive traveler stories
    ============================================================ */
 const Testimonials = () => {
     const reviews = [
-        { name: 'Neha & Amit', trip: 'Kashmir Honeymoon', text: 'Our Kashmir honeymoon was absolutely magical. The team planned every detail perfectly — from the houseboat stay to the Shikara ride at sunset.', rating: 5, tint: 'from-[#FF7200] to-[#FFB347]' },
-        { name: 'Rajesh Sharma', trip: 'Family Kashmir Tour', text: 'Best travel experience ever! Our kids loved every moment. The local guides were fantastic and the hotels were top-notch.', rating: 5, tint: 'from-[#0EA5E9] to-[#22D3EE]' },
-        { name: 'Meera Iyer', trip: 'Gulmarg Adventure', text: 'The gondola ride, the snow activities, the meadows — everything was perfectly organized. Highly recommend The Indian Wings!', rating: 5, tint: 'from-[#8B5CF6] to-[#D946EF]' },
-        { name: 'Arjun Verma', trip: 'Vaishno Devi Yatra', text: 'The pilgrimage package was seamless — comfortable stays, arranged darshan and a very supportive team throughout.', rating: 5, tint: 'from-[#10B981] to-[#34D399]' },
+        {
+            name: 'Neha & Amit',
+            initials: 'NA',
+            trip: 'Kashmir Honeymoon',
+            place: 'Dal Lake, Srinagar',
+            text: 'Our Kashmir honeymoon felt like a dream from the very first day. Every detail was handled beautifully — the warm houseboat welcome, quiet Shikara ride at sunset, and little surprises along the way made the trip completely ours.',
+            image: DESTINATIONS[0].img,
+        },
+        {
+            name: 'Rajesh Sharma',
+            initials: 'RS',
+            trip: 'Family Kashmir Tour',
+            place: 'Pahalgam Valley',
+            text: 'Travelling with children can be stressful, but this was effortless. The pace was just right, our driver was incredibly patient, and every stay felt comfortable and thoughtfully chosen. The kids are still talking about Kashmir.',
+            image: DESTINATIONS[2].img,
+        },
+        {
+            name: 'Meera Iyer',
+            initials: 'MI',
+            trip: 'Gulmarg Adventure',
+            place: 'Gulmarg, Kashmir',
+            text: 'From the gondola ride to playing in the snow, the entire journey was beautifully organised. We never felt rushed and always had someone local to guide us. It was adventurous, easy, and absolutely unforgettable.',
+            image: DESTINATIONS[1].img,
+        },
+        {
+            name: 'Arjun Verma',
+            initials: 'AV',
+            trip: 'Vaishno Devi Yatra',
+            place: 'Katra, Jammu',
+            text: 'A seamless pilgrimage from beginning to end. Comfortable stays, dependable transfers, and a genuinely supportive team gave our family the space to focus on the experience instead of worrying about arrangements.',
+            image: DESTINATIONS[3].img,
+        },
     ];
-    const scrollRef = useRef(null);
-    const scroll = (dir) => {
-        if (scrollRef.current) scrollRef.current.scrollBy({ left: dir * 380, behavior: 'smooth' });
+    const [activeReview, setActiveReview] = useState(0);
+    const review = reviews[activeReview];
+    const changeReview = (direction) => {
+        setActiveReview((current) => (current + direction + reviews.length) % reviews.length);
     };
+
     return (
-        <section className="py-20 md:py-28 bg-[#F8F6F1] overflow-hidden relative">
-            <div className="absolute top-10 right-10 w-40 h-40 bg-[#FF7200]/5 rounded-full blur-2xl animate-drift pointer-events-none"></div>
-            <div className="max-w-[1380px] mx-auto px-4 md:px-8 relative">
+        <section className="relative overflow-hidden bg-[#061830] py-20 md:py-28">
+            <div className="absolute inset-0 opacity-[0.035] grain pointer-events-none"></div>
+            <div className="absolute -top-48 -right-32 h-[32rem] w-[32rem] rounded-full border border-white/10 pointer-events-none"></div>
+            <div className="absolute -top-24 -right-16 h-80 w-80 rounded-full border border-white/10 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 h-52 w-52 bg-[#FF7200]/10 blur-[100px] pointer-events-none"></div>
+
+            <div className="relative max-w-[1380px] mx-auto px-4 md:px-8">
                 <Reveal>
-                    <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
-                        <div>
-                            <SectionBadge icon={<Star size={16} />}>TESTIMONIALS</SectionBadge>
-                            <h2 className={`${typography.heading} text-3xl md:text-5xl font-bold text-[#071B3A]`}>What Our Travelers Say</h2>
+                    <div className="mb-10 flex flex-col gap-7 md:mb-14 md:flex-row md:items-end md:justify-between">
+                        <div className="max-w-2xl">
+                            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#FFB347]/30 bg-[#FF7200]/10 px-4 py-2 text-xs font-bold tracking-[0.18em] text-[#FFB347]">
+                                <Star size={14} fill="currentColor" /> THE GUESTBOOK
+                            </div>
+                            <h2 className={`${typography.heading} text-4xl font-bold leading-[1.08] text-white md:text-6xl`}>
+                                Journeys remembered.<br />
+                                <span className="italic text-[#FF9B45]">Stories retold.</span>
+                            </h2>
                         </div>
-                        <div className="hidden md:flex gap-3">
-                            <button onClick={() => scroll(-1)} className="w-12 h-12 rounded-full border border-[#DDE2E8] flex items-center justify-center text-[#071B3A] hover:bg-[#FF7200] hover:text-white hover:border-[#FF7200] transition-all duration-300 hover:scale-110"><ChevronLeft size={20} /></button>
-                            <button onClick={() => scroll(1)} className="w-12 h-12 rounded-full border border-[#DDE2E8] flex items-center justify-center text-[#071B3A] hover:bg-[#FF7200] hover:text-white hover:border-[#FF7200] transition-all duration-300 hover:scale-110"><ChevronRight size={20} /></button>
+                        <div className="flex items-center gap-4 self-start rounded-2xl border border-white/10 bg-white/[0.06] px-5 py-4 backdrop-blur-sm md:self-auto">
+                            <strong className={`${typography.heading} text-4xl text-white`}>5.0</strong>
+                            <div>
+                                <div className="mb-1 flex gap-0.5 text-[#FF9B45]" aria-label="5 out of 5 stars">
+                                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+                                </div>
+                                <p className="text-xs font-medium text-white/55">500+ happy families</p>
+                            </div>
                         </div>
                     </div>
                 </Reveal>
-                <div ref={scrollRef} className="flex overflow-x-auto gap-6 hide-scrollbar snap-x snap-mandatory pb-4">
-                    {reviews.map((review, i) => (
-                        <Reveal key={i} delay={i * 100}>
-                            <div className="min-w-[320px] md:min-w-[390px] snap-start bg-white p-8 rounded-3xl border border-[#F2F4F7] card-lift relative">
-                                <span className={`absolute -top-4 left-8 w-10 h-10 rounded-xl bg-gradient-to-br ${review.tint} flex items-center justify-center text-white font-serif text-xl shadow-lg`}>“</span>
-                                <div className="flex text-[#FF7200] mb-4 mt-2">
-                                    {[...Array(review.rating)].map((_, j) => <Star key={j} size={16} fill="currentColor" className="animate-[scale-in_0.3s_ease_forwards]" style={{ animationDelay: `${j * 0.1}s` }} />)}
+
+                <Reveal direction="blur">
+                    <div className="overflow-hidden rounded-[28px] bg-[#F8F2E8] shadow-[0_32px_90px_rgba(0,0,0,0.28)] md:rounded-[38px]">
+                        <div className="grid min-h-[570px] lg:grid-cols-[1.03fr_0.97fr]">
+                            <div className="relative min-h-[330px] overflow-hidden lg:min-h-full">
+                                <img
+                                    key={`image-${activeReview}`}
+                                    src={review.image}
+                                    alt={review.place}
+                                    loading="lazy"
+                                    className="testimonial-image absolute inset-0 h-full w-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#061830]/80 via-transparent to-[#061830]/10"></div>
+                                <div className="absolute left-5 right-5 top-5 flex items-center justify-between md:left-8 md:right-8 md:top-8">
+                                    <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-xs font-bold text-[#071B3A] shadow-lg backdrop-blur-md">
+                                        <MapPin size={14} className="text-[#FF7200]" /> {review.place}
+                                    </span>
+                                    <span className="font-mono text-xs font-bold tracking-[0.18em] text-white">
+                                        0{activeReview + 1} <span className="text-white/45">/ 0{reviews.length}</span>
+                                    </span>
                                 </div>
-                                <p className="text-[#071B3A] text-sm md:text-base italic mb-8 font-serif leading-relaxed">"{review.text}"</p>
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${review.tint} text-white flex items-center justify-center font-bold text-lg font-serif ring-4 ring-white shadow-md`}>{review.name.charAt(0)}</div>
-                                    <div>
-                                        <h4 className="font-bold text-[#071B3A] text-sm">{review.name}</h4>
-                                        <p className="text-[#687386] text-xs">{review.trip}</p>
+                                <div className="absolute bottom-6 left-6 right-6 md:bottom-8 md:left-8 md:right-8">
+                                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-white/60">A moment from</p>
+                                    <p className={`${typography.heading} text-2xl font-bold text-white md:text-3xl`}>{review.trip}</p>
+                                </div>
+                            </div>
+
+                            <div className="testimonial-paper relative flex flex-col justify-between p-7 sm:p-10 lg:p-12 xl:p-16" aria-live="polite">
+                                <span className={`${typography.heading} absolute right-8 top-4 select-none text-[110px] leading-none text-[#FF7200]/10 md:right-12 md:top-7 md:text-[150px]`} aria-hidden="true">“</span>
+                                <div key={`copy-${activeReview}`} className="testimonial-copy relative z-10">
+                                    <div className="mb-7 flex gap-1 text-[#FF7200]">
+                                        {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
+                                    </div>
+                                    <blockquote className={`${typography.heading} text-[24px] font-medium italic leading-[1.45] text-[#071B3A] sm:text-3xl xl:text-[34px]`}>
+                                        “{review.text}”
+                                    </blockquote>
+                                </div>
+
+                                <div className="relative z-10 mt-10 border-t border-[#071B3A]/10 pt-7">
+                                    <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`${typography.heading} flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#071B3A] font-bold text-white shadow-[0_0_0_5px_rgba(255,114,0,0.12)]`}>
+                                                {review.initials}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-[#071B3A]">{review.name}</h3>
+                                                <p className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-[#607087]">
+                                                    <CheckCircle2 size={14} className="text-[#16A36A]" /> Verified traveller
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button onClick={() => changeReview(-1)} aria-label="Previous traveler story" className="flex h-12 w-12 items-center justify-center rounded-full border border-[#071B3A]/15 text-[#071B3A] transition-all duration-300 hover:border-[#FF7200] hover:bg-[#FF7200] hover:text-white">
+                                                <ChevronLeft size={19} />
+                                            </button>
+                                            <button onClick={() => changeReview(1)} aria-label="Next traveler story" className="flex h-12 w-12 items-center justify-center rounded-full bg-[#071B3A] text-white transition-all duration-300 hover:bg-[#FF7200] hover:shadow-lg">
+                                                <ChevronRight size={19} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </Reveal>
+                        </div>
+                    </div>
+                </Reveal>
+
+                <div className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 hide-scrollbar md:mt-6 md:grid md:grid-cols-4">
+                    {reviews.map((item, index) => (
+                        <button
+                            key={item.name}
+                            onClick={() => setActiveReview(index)}
+                            aria-pressed={index === activeReview}
+                            className={`group flex min-w-[245px] snap-start items-center gap-3 rounded-2xl border p-2.5 text-left transition-all duration-300 md:min-w-0 ${index === activeReview ? 'border-[#FF7200] bg-[#FF7200]' : 'border-white/10 bg-white/[0.055] hover:border-white/25 hover:bg-white/10'}`}
+                        >
+                            <img src={item.image} alt="" loading="lazy" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+                            <span className="min-w-0">
+                                <span className={`block truncate text-sm font-bold ${index === activeReview ? 'text-white' : 'text-white/85'}`}>{item.name}</span>
+                                <span className={`mt-1 block truncate text-[11px] font-medium ${index === activeReview ? 'text-white/75' : 'text-white/40'}`}>{item.trip}</span>
+                            </span>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -573,31 +691,52 @@ const Testimonials = () => {
 };
 
 /* ============================================================
-   CONTACT CTA — full-bleed image
+   CONTACT CTA — generated cinematic Kashmir banner
    ============================================================ */
 const ContactCTA = ({ onNavigate }) => (
-    <section className="relative py-28 md:py-40 overflow-hidden">
-        <img src={CTA_BACKGROUND} alt="Kashmir mountains" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#071B3A]/95 via-[#071B3A]/80 to-[#071B3A]/70"></div>
-        <div className="grain absolute inset-0 opacity-[0.07] mix-blend-overlay pointer-events-none"></div>
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#FF7200]/15 rounded-full blur-3xl animate-drift pointer-events-none"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#25D366]/15 rounded-full blur-3xl animate-drift pointer-events-none" style={{ animationDelay: '-6s' }}></div>
-        <div className="max-w-[800px] mx-auto text-center px-4 relative z-10">
-            <Reveal direction="blur">
-                <h2 className={`${typography.heading} text-4xl md:text-6xl font-bold text-white mb-6`}>
-                    Ready to Explore <span className="text-gradient italic">Kashmir?</span>
-                </h2>
-                <p className="text-gray-300 text-lg mb-10 font-light">Contact us today and let us plan your perfect Kashmir trip.</p>
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-shine inline-flex items-center justify-center px-8 py-4 rounded-[10px] font-semibold text-base bg-[#25D366] text-white hover:bg-[#1ebe57] hover:shadow-xl hover:shadow-[#25D366]/30 hover:-translate-y-1 transition-all duration-300">
-                        <WhatsAppGlyph size={18} className="mr-2" /> WhatsApp Us
-                    </a>
-                    <button onClick={() => onNavigate('contact')} className="btn-shine inline-flex items-center justify-center px-8 py-4 rounded-[10px] font-semibold text-base glass text-white hover:bg-white/20 transition-all duration-300">
-                        Contact Us
-                    </button>
+    <section className="bg-[#F8F6F1] px-4 py-16 md:px-8 md:py-24">
+        <Reveal direction="blur" className="mx-auto max-w-[1380px]">
+            <div className="relative min-h-[570px] overflow-hidden rounded-[30px] bg-[#071B3A] shadow-[0_30px_80px_-28px_rgba(7,27,58,0.5)] md:rounded-[42px] lg:min-h-[620px]">
+                <img src="/cta-kashmir.jpg" alt="Shikara on a tranquil Kashmir lake beneath the Himalayas" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-[58%_center] transition-transform duration-[1800ms] hover:scale-[1.025]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#041226]/95 via-[#071B3A]/76 to-[#071B3A]/10"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#041226]/75 via-transparent to-[#041226]/20"></div>
+                <div className="grain absolute inset-0 opacity-[0.055] mix-blend-overlay pointer-events-none"></div>
+
+                <div className="relative z-10 flex min-h-[570px] items-center px-6 py-16 sm:px-10 md:px-16 lg:min-h-[620px] lg:px-20 xl:px-24">
+                    <div className="max-w-[680px]">
+                        <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold tracking-[0.16em] text-[#FFD2AC] backdrop-blur-md">
+                            <Sparkles size={14} className="text-[#FF8A2E]" /> YOUR STORY STARTS HERE
+                        </div>
+                        <h2 className={`${typography.heading} mb-7 text-[42px] font-bold leading-[1.03] text-white sm:text-5xl md:text-6xl xl:text-[76px]`}>
+                            Ready to Explore<br />
+                            <span className="italic text-[#FF9B45]">Kashmir?</span>
+                        </h2>
+                        <p className="mb-9 max-w-xl text-base font-light leading-relaxed text-white/72 md:text-lg">
+                            Tell us how you love to travel. Our local experts will shape a personal Kashmir journey around your dates, pace, and dreams.
+                        </p>
+                        <div className="flex flex-col gap-3 sm:flex-row">
+                            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-shine inline-flex items-center justify-center rounded-xl bg-[#25D366] px-7 py-4 text-sm font-bold text-white shadow-xl shadow-[#25D366]/20 transition-all duration-300 hover:-translate-y-1 hover:bg-[#1ebe57]">
+                                <WhatsAppGlyph size={18} className="mr-2" /> Plan My Kashmir Trip
+                            </a>
+                            <button onClick={() => onNavigate('contact')} className="group inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-sm font-bold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-[#071B3A]">
+                                Talk to an Expert <ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                            </button>
+                        </div>
+
+                        <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 text-xs font-semibold text-white/65">
+                            <span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#FF9B45]" /> 100% custom itinerary</span>
+                            <span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#FF9B45]" /> Local Kashmir experts</span>
+                            <span className="flex items-center gap-2"><CheckCircle2 size={15} className="text-[#FF9B45]" /> 24/7 trip support</span>
+                        </div>
+                    </div>
                 </div>
-            </Reveal>
-        </div>
+
+                <div className="absolute bottom-7 right-7 hidden items-center gap-3 rounded-2xl border border-white/20 bg-[#071B3A]/65 px-5 py-4 text-white shadow-xl backdrop-blur-xl lg:flex">
+                    <span className={`${typography.heading} text-3xl font-bold text-[#FF9B45]`}>15+</span>
+                    <span className="text-[10px] font-bold uppercase leading-relaxed tracking-[0.16em] text-white/65">Years of<br />local expertise</span>
+                </div>
+            </div>
+        </Reveal>
     </section>
 );
 

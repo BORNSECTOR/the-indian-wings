@@ -10,7 +10,7 @@ export const CALL = 'tel:+919103599174';
 export const EMAIL = 'mailto:Kashmirtravels517@gmail.com';
 export const OFFICIAL_LOGO = 'https://goahotelpackages.in/landing/assets/logo-ijORuPj_.png';
 
-const Logo = ({ className, ...props }) => (
+export const Logo = ({ className, ...props }) => (
     <img src={OFFICIAL_LOGO} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = '/logo.webp'; }} alt="The Indian Wings" className={className} {...props} />
 );
 

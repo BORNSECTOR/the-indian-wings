@@ -187,6 +187,23 @@
     100% { box-shadow: 0 0 0 18px rgba(255, 114, 0, 0); }
   }
   .animate-ring-pulse { animation: ring-pulse 1.8s ease-out infinite; }
+
+  /* Guestbook story transitions */
+  @keyframes testimonial-image-in {
+    from { opacity: 0.35; transform: scale(1.08); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .testimonial-image {
+    animation: testimonial-image-in 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes testimonial-copy-in {
+    from { opacity: 0; transform: translateY(16px); filter: blur(5px); }
+    to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  .testimonial-copy {
+    animation: testimonial-copy-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 /* ============================================================
@@ -255,6 +272,14 @@
 
   /* page transition */
   .page-enter { animation: fade-in 0.4s ease forwards; }
+
+  /* warm, tactile paper used by the traveler guestbook */
+  .testimonial-paper {
+    background-color: #f8f2e8;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.78), transparent 30%),
+      repeating-linear-gradient(0deg, rgba(7, 27, 58, 0.018) 0, rgba(7, 27, 58, 0.018) 1px, transparent 1px, transparent 5px);
+  }
 
   /* marquee pause on hover */
   .marquee-pause:hover .animate-marquee,
